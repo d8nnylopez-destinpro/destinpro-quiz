@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Stage Are You In? — DestinPro Academy</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; padding: 2rem 1rem; }
+    .quiz-wrap { max-width: 580px; margin: 0 auto; }
+
+    /* Progress */
+    .progress-bar { height: 3px; background: #e5e5e5; border-radius: 2px; margin-bottom: 2rem; }
+    .progress-fill { height: 100%; background: #7F77DD; border-radius: 2px; transition: width 0.4s ease; }
+
+    /* Question */
+    .q-label { font-size: 12px; color: #888; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .q-text { font-size: 20px; font-weight: 500; line-height: 1.5; margin-bottom: 1.5rem; }
+    .option-btn { display: block; width: 100%; text-align: left; padding: 14px 18px; margin-bottom: 10px; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; font-size: 15px; color: #1a1a1a; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+    .option-btn:hover { border-color: #7F77DD; background: #f9f8ff; }
+    .option-btn.selected { border-color: #7F77DD; background: #EEEDFE; color: #3C3489; }
+    .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
+    .nav-btn { padding: 10px 24px; border-radius: 8px; border: 1px solid #ddd; background: transparent; font-size: 14px; color: #1a1a1a; cursor: pointer; }
+    .nav-btn.primary { background: #7F77DD; border-color: #7F77DD; color: #fff; font-weight: 500; }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+    /* Gate */
+    .gate-wrap { padding: 1rem 0; }
+    .gate-title { font-size: 22px; font-weight: 500; margin-bottom: 0.5rem; }
+    .gate-sub { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 1.5rem; }
+    .gate-input { display: block; width: 100%; padding: 12px 16px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; color: #1a1a1a; background: #fff; }
+    .gate-input:focus { outline: none; border-color: #7F77DD; }
+    .gate-btn { width: 100%; padding: 14px; background: #7F77DD; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; margin-top: 4px; }
+    .gate-note { font-size: 12px; color: #aaa; text-align: center; margin-top: 10px; }
+
+    /* Result */
+    .result-wrap { padding: 1rem 0; }
+    .hi-line { font-size: 14px; color: #888; margin-bottom: 0.75rem; }
+    .hi-name { color: #7F77DD; }
+    .result-badge { display: inline-block; padding: 6px 16px; border-radius: 999px; font-size: 12px; font-weight: 500; margin-bottom: 1rem; }
+    .result-title { font-size: 22px; font-weight: 500; margin: 1rem 0 0.75rem; }
+    .result-desc { font-size: 15px; line-height: 1.7; color: #444; margin-bottom: 1.25rem; }
+    .pct-bar-wrap { margin: 0.75rem 0 0.25rem; }
+    .pct-bar-track { height: 4px; background: #e5e5e5; border-radius: 2px; }
+    .pct-bar-fill { height: 100%; border-radius: 2px; }
+    .pct-label { font-size: 12px; color: #aaa; margin-top: 4px; }
+    .result-section { background: #f7f7f5; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 10px; }
+    .result-section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #aaa; margin-bottom: 0.4rem; }
+    .result-section-text { font-size: 14px; color: #1a1a1a; line-height: 1.6; }
+    .reframe-section { border: 1px solid #e5e5e5; border-radius: 10px; padding: 0.75rem 1rem; margin-top: 12px; }
+    .reframe-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #aaa; margin-bottom: 0.3rem; }
+    .reframe-text { font-size: 14px; color: #1a1a1a; line-height: 1.6; font-style: italic; }
+    .cta-btn { display: inline-block; margin-top: 1.25rem; padding: 12px 28px; background: #7F77DD; color: #fff; border-radius: 8px; font-size: 15px; font-weight: 500; border: none; cursor: pointer; text-decoration: none; }
+    .retake-btn { display: inline-block; margin-top: 0.75rem; margin-left: 1rem; padding: 12px 20px; background: transparent; color: #888; border-radius: 8px; font-size: 14px; border: 1px solid #ddd; cursor: pointer; }
+
+    @media (max-width: 480px) {
+      body { padding: 1.25rem 1rem; }
+      .q-text { font-size: 17px; }
+      .option-btn { font-size: 14px; padding: 12px 14px; }
+      .retake-btn { margin-left: 0; margin-top: 0.5rem; display: block; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="quiz-wrap">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen">
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:11%"></div></div>
+    <div class="q-label" id="q-label">Question 1 of 9</div>
+    <div class="q-text" id="q-text"></div>
+    <div id="options"></div>
+    <div class="nav-row">
+      <button class="nav-btn" id="back-btn" onclick="goBack()">Back</button>
+      <button class="nav-btn primary" id="next-btn" onclick="goNext()" disabled>Next</button>
+    </div>
+  </div>
+
+  <!-- GATE SCREEN -->
+  <div id="gate-screen" style="display:none">
+    <div class="gate-wrap">
+      <div class="gate-title">Your result is ready.</div>
+      <div class="gate-sub">Enter your name and email to see which stage you're in and what it means for how you move.</div>
+      <input class="gate-input" id="gate-name" type="text" placeholder="Your first name" />
+      <input class="gate-input" id="gate-email" type="email" placeholder="Your email address" />
+      <button class="gate-btn" onclick="submitGate()">Show my result</button>
+      <div class="gate-note">No spam. Unsubscribe any time.</div>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" style="display:none"></div>
+
+</div>
+
+<script>
+  const questions = [
+    { text: "When you miss a week of training or movement, what happens next?", options: [{ text: "I struggle to get back — I often don't", score: 1 }, { text: "I restart, but it takes a few attempts", score: 2 }, { text: "I return with some friction, but I get back on track", score: 3 }, { text: "I return naturally — it's just what I do", score: 4 }] },
+    { text: "How would you describe your relationship with pain or discomfort in your body?", options: [{ text: "It controls what I do — I avoid or push through blindly", score: 1 }, { text: "I notice it but don't always know what to do with it", score: 2 }, { text: "I can read it and usually adjust my approach", score: 3 }, { text: "I use it as information — it guides my decisions", score: 4 }] },
+    { text: "When it comes to your movement or training, how do you currently make decisions?", options: [{ text: "I follow someone else's program or just wing it", score: 1 }, { text: "I borrow pieces from different things I've tried", score: 2 }, { text: "I have some principles, but they're not fully consistent", score: 3 }, { text: "I have a clear framework I trust and adapt from", score: 4 }] },
+    { text: "How consistent have you been with movement or training over the past 6 months?", options: [{ text: "Very inconsistent — lots of gaps and restarts", score: 1 }, { text: "Somewhat consistent, but it still feels fragile", score: 2 }, { text: "Mostly consistent with occasional disruptions", score: 3 }, { text: "Consistently showing up — it's part of my rhythm", score: 4 }] },
+    { text: "When something in your body isn't working — a movement, a pain, a plateau — what do you do?", options: [{ text: "I'm not sure where to start, so I wait or give up", score: 1 }, { text: "I try things randomly and hope something works", score: 2 }, { text: "I have some ideas and usually figure it out eventually", score: 3 }, { text: "I have a clear process for diagnosing and adjusting", score: 4 }] },
+    { text: "How do you feel about your movement capacity right now?", options: [{ text: "Limited — I feel stuck or far from where I want to be", score: 1 }, { text: "Building — there's progress, but a lot of gaps", score: 2 }, { text: "Solid — I have a good base I'm working from", score: 3 }, { text: "Strong — I can do what I want and keep expanding", score: 4 }] },
+    { text: "When you think about your movement or training goals, which best describes you?", options: [{ text: "I don't really have clear goals — I'm just trying to feel okay", score: 1 }, { text: "I have goals but they feel vague or hard to act on", score: 2 }, { text: "My goals are clear and I have a general direction", score: 3 }, { text: "My goals are specific, staged, and I know how to pursue them", score: 4 }] },
+    { text: "How do setbacks — injury, illness, life chaos — affect your long-term relationship with movement?", options: [{ text: "They tend to derail me for a long time", score: 1 }, { text: "I recover eventually, but it's messy", score: 2 }, { text: "I adapt — they slow me down but don't stop me", score: 3 }, { text: "They're part of the process — I integrate them and move forward", score: 4 }] },
+    { text: "Honestly, how much do you trust your own body's signals to guide your movement?", options: [{ text: "Not at all — I rely on others to tell me what to do", score: 1 }, { text: "Sometimes — I notice things but don't fully trust myself", score: 2 }, { text: "Mostly — I have a decent read on what my body needs", score: 3 }, { text: "Fully — my body is my primary guide", score: 4 }] }
+  ];
+
+  const results = {
+    foundation: {
+      label: "Foundation", range: "0 – 45%", pct: 22, barColor: "#7F77DD",
+      badge: { bg: "#EEEDFE", color: "#3C3489" },
+      title: "You're building your foundation",
+      desc: "This is where it starts. Foundation isn't a setback, it's the most important stage of the whole process. What you build here determines everything that follows. Your job right now isn't to do more. It's to build the capacity that makes more possible.",
+      looks: "You might be following a program or showing up to classes and that's completely fine. The work at this stage is learning which movements in those spaces actually work for your body, and which ones need to be adjusted. A coach can help with that, but you're the one who knows what you're feeling.",
+      focus: "Consistency, body awareness, and learning to modify with confidence rather than just pushing through or opting out.",
+      truth: "Most people skip this stage or rush through it. The ones who don't are the ones who end up with something that lasts.",
+      reframe: "This is where your body is. That's not the whole story."
+    },
+    dev1: {
+      label: "Development I", range: "46 – 70%", pct: 58, barColor: "#1D9E75",
+      badge: { bg: "#E1F5EE", color: "#085041" },
+      title: "You're in early development",
+      desc: "You have a foundation. Capacity exists and you've proven that to yourself. But it's still inconsistent, and you're mostly working from structure that came from outside. That's not a problem in itself. Programs and classes are useful. The shift at this stage is learning to work within them rather than just follow them.",
+      looks: "You can show up and do the work, but you're still figuring out what adjustments you need to make in the moment. You might rely on a coach to flag things, or find yourself unsure what to do when something doesn't feel right.",
+      focus: "Building enough self-awareness to make good decisions on the fly. The goal isn't to leave the program, it's to stop being a passenger in it.",
+      truth: "This is where most people get stuck longest. Not because they lack effort but because nobody ever taught them how to read their own body well enough to adjust.",
+      reframe: "Does this score match how you think about movement, or just how your body is moving right now? Those two things aren't always the same."
+    },
+    dev2: {
+      label: "Development II", range: "71 – 83%", pct: 77, barColor: "#BA7517",
+      badge: { bg: "#FAEEDA", color: "#633806" },
+      title: "You're in advanced development",
+      desc: "You've built something real. Your capacity is solid, your self-awareness is strong, and you have a working approach. You can take a program or a class and adapt it as you go without losing the thread. What you're still refining is the framework underneath it all, making it fully yours.",
+      looks: "You know when something isn't right and you know what to do about it. You might still lean on outside structure for accountability or variety, and that's fine. The difference now is that you're leading within it rather than being led by it.",
+      focus: "Deepening trust in your own framework. Learning to hold your system steady under pressure rather than constantly rebuilding it.",
+      truth: "Most people never get here. The temptation at this stage is to keep adding. The real work is trusting what you've already built.",
+      reframe: "Your body and your understanding of movement don't always travel together. It's worth knowing which one is leading."
+    },
+    mastery: {
+      label: "Mastery", range: "84%+", pct: 91, barColor: "#639922",
+      badge: { bg: "#EAF3DE", color: "#27500A" },
+      title: "You're operating at mastery",
+      desc: "Very few people reach this stage. Mastery isn't a fixed point, it's a practice. Your capacity is strong, your framework is yours, and movement is genuinely part of how you live. You can enter any environment, follow any structure, and still know exactly what needs to change for it to work for your body.",
+      looks: "You might still train with a coach, follow programming, or take classes. What's different is that none of those things are running the show. You're an active participant in every environment you enter, not a passive one.",
+      focus: "Maintaining depth while continuing to expand. Staying honest with yourself as things change, and sharing what took years to figure out.",
+      truth: "The biggest risk at this stage isn't decline. It's stagnation dressed up as consistency.",
+      reframe: "Mastery is something you keep choosing. Especially when your body asks you to start again."
+    }
+  };
+
+  let current = 0, answers = [], selected = null, firstName = '';
+
+  function renderQuestion() {
+    const q = questions[current];
+    document.getElementById('q-label').textContent = 'Question ' + (current + 1) + ' of ' + questions.length;
+    document.getElementById('q-text').textContent = q.text;
+    document.getElementById('progress').style.width = Math.round(((current + 1) / questions.length) * 100) + '%';
+    const opts = document.getElementById('options');
+    opts.innerHTML = '';
+    selected = answers[current] !== undefined ? answers[current] : null;
+    q.options.forEach(function(o, i) {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn' + (selected === i ? ' selected' : '');
+      btn.textContent = o.text;
+      btn.onclick = function() { selectOption(i); };
+      opts.appendChild(btn);
+    });
+    document.getElementById('back-btn').disabled = current === 0;
+    document.getElementById('next-btn').disabled = selected === null;
+    document.getElementById('next-btn').textContent = current === questions.length - 1 ? 'See my result' : 'Next';
+  }
+
+  function selectOption(i) {
+    selected = i; answers[current] = i;
+    document.querySelectorAll('.option-btn').forEach(function(b, idx) { b.classList.toggle('selected', idx === i); });
+    document.getElementById('next-btn').disabled = false;
+  }
+
+  function goNext() {
+    if (selected === null) return;
+    if (current < questions.length - 1) { current++; selected = answers[current] !== undefined ? answers[current] : null; renderQuestion(); }
+    else { document.getElementById('quiz-screen').style.display = 'none'; document.getElementById('gate-screen').style.display = 'block'; }
+  }
+
+  function goBack() {
+    if (current > 0) { current--; selected = answers[current] !== undefined ? answers[current] : null; renderQuestion(); }
+  }
+
+  function submitGate() {
+    const name = document.getElementById('gate-name').value.trim();
+    const email = document.getElementById('gate-email').value.trim();
+    if (!name || !email) { alert('Please enter your name and email to see your result.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
+    firstName = name.split(' ')[0];
+    document.getElementById('gate-screen').style.display = 'none';
+    showResult();
+  }
+
+  function showResult() {
+    const total = answers.reduce(function(sum, a, i) { return sum + questions[i].options[a].score; }, 0);
+    const pct = total / (questions.length * 4);
+    let key = 'foundation';
+    if (pct >= 0.84) key = 'mastery';
+    else if (pct >= 0.71) key = 'dev2';
+    else if (pct >= 0.46) key = 'dev1';
+    const r = results[key];
+    const rs = document.getElementById('result-screen');
+    rs.style.display = 'block';
+    rs.innerHTML =
+      '<div class="result-wrap">' +
+      '<p class="hi-line">Hi <span class="hi-name">' + firstName + '</span>, here\'s your result.</p>' +
+      '<span class="result-badge" style="background:' + r.badge.bg + ';color:' + r.badge.color + ';">' + r.label + ' &nbsp;·&nbsp; ' + r.range + '</span>' +
+      '<div class="pct-bar-wrap"><div class="pct-bar-track"><div class="pct-bar-fill" style="width:' + r.pct + '%;background:' + r.barColor + ';"></div></div><div class="pct-label">Your score falls in this range</div></div>' +
+      '<div class="result-title">' + r.title + '</div>' +
+      '<div class="result-desc">' + r.desc + '</div>' +
+      '<div class="result-section"><div class="result-section-label">What this looks like</div><div class="result-section-text">' + r.looks + '</div></div>' +
+      '<div class="result-section"><div class="result-section-label">Your focus right now</div><div class="result-section-text">' + r.focus + '</div></div>' +
+      '<div class="result-section"><div class="result-section-label">The honest truth</div><div class="result-section-text">' + r.truth + '</div></div>' +
+      '<div class="reframe-section"><div class="reframe-label">Something worth naming</div><div class="reframe-text">' + r.reframe + '</div></div>' +
+      '<div style="margin-top:1.5rem;">' +
+      '<a class="cta-btn" href="YOUR_MINI_COURSE_LINK_HERE">Learn about the mini course</a>' +
+      '<button class="retake-btn" onclick="retake()">Retake quiz</button>' +
+      '</div></div>';
+  }
+
+  function retake() {
+    current = 0; answers = []; selected = null; firstName = '';
+    document.getElementById('result-screen').style.display = 'none';
+    document.getElementById('gate-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    renderQuestion();
+  }
+
+  renderQuestion();
+</script>
+</body>
+</html>
