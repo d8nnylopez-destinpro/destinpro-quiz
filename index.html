@@ -52,6 +52,11 @@
     .reframe-text { font-size: 14px; color: #1a1a1a; line-height: 1.6; font-style: italic; }
     .cta-btn { display: inline-block; margin-top: 1.25rem; padding: 12px 28px; background: #7F77DD; color: #fff; border-radius: 8px; font-size: 15px; font-weight: 500; border: none; cursor: pointer; text-decoration: none; }
     .retake-btn { display: inline-block; margin-top: 0.75rem; margin-left: 1rem; padding: 12px 20px; background: transparent; color: #888; border-radius: 8px; font-size: 14px; border: 1px solid #ddd; cursor: pointer; }
+    .bridge-section { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid #e5e5e5; }
+    .bridge-text { font-size: 15px; color: #333; line-height: 1.75; margin-bottom: 1.25rem; }
+    .cta-box { background: #f7f7f5; border-radius: 10px; padding: 1rem 1.25rem; }
+    .cta-box-text { font-size: 14px; color: #555; line-height: 1.65; margin-bottom: 1rem; }
+    .cta-btn-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0; }
 
     @media (max-width: 480px) {
       body { padding: 1.25rem 1rem; }
@@ -113,7 +118,9 @@
       looks: "You might be following a program or showing up to classes and that's completely fine. The work at this stage is learning which movements in those spaces actually work for your body, and which ones need to be adjusted. A coach can help with that, but you're the one who knows what you're feeling.",
       focus: "Consistency, body awareness, and learning to modify with confidence rather than just pushing through or opting out.",
       truth: "Most people skip this stage or rush through it. The ones who don't are the ones who end up with something that lasts.",
-      reframe: "This is where your body is. That's not the whole story."
+      reframe: "This is where your body is. That's not the whole story.",
+      bridge: "If you're sitting with that — the idea that your body and your understanding aren't in the same place — that's not a small thing to notice. Most people never name it. The Movement Capacity Framework is where I get into exactly that: what it means, why it matters, and what to actually do with it. I built this framework from years of research and from rebuilding my own body from the ground up. Foundation is where I started too.",
+      ctaText: "If you're ready to understand the full picture — not just where you are, but what it means and where it goes — the mini course is the next step."
     },
     dev1: {
       label: "Development I", range: "46 – 70%", pct: 58, barColor: "#1D9E75",
@@ -123,7 +130,9 @@
       looks: "You can show up and do the work, but you're still figuring out what adjustments you need to make in the moment. You might rely on a coach to flag things, or find yourself unsure what to do when something doesn't feel right.",
       focus: "Building enough self-awareness to make good decisions on the fly. The goal isn't to leave the program, it's to stop being a passenger in it.",
       truth: "This is where most people get stuck longest. Not because they lack effort but because nobody ever taught them how to read their own body well enough to adjust.",
-      reframe: "Does this score match how you think about movement, or just how your body is moving right now? Those two things aren't always the same."
+      reframe: "Does this score match how you think about movement, or just how your body is moving right now? Those two things aren't always the same.",
+      bridge: "The gap between what your body can do and what you understand about movement — that's exactly what The Movement Capacity Framework is built around. Not to close it overnight. But to make it legible. So you stop guessing and start actually knowing what you're working with. I've been in this stage. I've coached people through it. The path out is clearer than it feels right now.",
+      ctaText: "The mini course walks you through the full framework — where you are, what it means, and how to move through it with intention instead of hope."
     },
     dev2: {
       label: "Development II", range: "71 – 83%", pct: 77, barColor: "#BA7517",
@@ -133,7 +142,9 @@
       looks: "You know when something isn't right and you know what to do about it. You might still lean on outside structure for accountability or variety, and that's fine. The difference now is that you're leading within it rather than being led by it.",
       focus: "Deepening trust in your own framework. Learning to hold your system steady under pressure rather than constantly rebuilding it.",
       truth: "Most people never get here. The temptation at this stage is to keep adding. The real work is trusting what you've already built.",
-      reframe: "Your body and your understanding of movement don't always travel together. It's worth knowing which one is leading."
+      reframe: "Your body and your understanding of movement don't always travel together. It's worth knowing which one is leading.",
+      bridge: "You've built something most people never build. The next part isn't about adding more — it's about understanding the architecture of what you've already built well enough to hold it steady, evolve it intentionally, and if you're a coach, teach it to others. The Movement Capacity Framework puts language to what you've been doing by feel. That matters more than it might seem.",
+      ctaText: "The mini course is where the framework becomes fully yours — not just something you're living, but something you understand well enough to use on purpose."
     },
     mastery: {
       label: "Mastery", range: "84%+", pct: 91, barColor: "#639922",
@@ -143,7 +154,9 @@
       looks: "You might still train with a coach, follow programming, or take classes. What's different is that none of those things are running the show. You're an active participant in every environment you enter, not a passive one.",
       focus: "Maintaining depth while continuing to expand. Staying honest with yourself as things change, and sharing what took years to figure out.",
       truth: "The biggest risk at this stage isn't decline. It's stagnation dressed up as consistency.",
-      reframe: "Mastery is something you keep choosing. Especially when your body asks you to start again."
+      reframe: "Mastery is something you keep choosing. Especially when your body asks you to start again.",
+      bridge: "If you're here, you already know that mastery isn't a destination. It's a practice of staying honest with yourself as things change. What the mini course offers someone at this stage isn't new information — it's a framework precise enough to hold everything you've learned, and clear enough to share it. Whether that's with clients, with people you care about, or just with yourself.",
+      ctaText: "The mini course is for people who want to understand the full architecture — not just live it, but be able to name it, teach it, and keep building on it."
     }
   };
 
@@ -214,10 +227,15 @@
       '<div class="result-section"><div class="result-section-label">Your focus right now</div><div class="result-section-text">' + r.focus + '</div></div>' +
       '<div class="result-section"><div class="result-section-label">The honest truth</div><div class="result-section-text">' + r.truth + '</div></div>' +
       '<div class="reframe-section"><div class="reframe-label">Something worth naming</div><div class="reframe-text">' + r.reframe + '</div></div>' +
-      '<div style="margin-top:1.5rem;">' +
-      '<a class="cta-btn" href="YOUR_MINI_COURSE_LINK_HERE">Learn about the mini course</a>' +
+      '<div class="bridge-section">' +
+      '<p class="bridge-text">' + r.bridge + '</p>' +
+      '<div class="cta-box">' +
+      '<p class="cta-box-text">' + r.ctaText + '</p>' +
+      '<div class="cta-btn-wrap">' +
+      '<a class="cta-btn" href="YOUR_MINI_COURSE_LINK_HERE">Take me to the course →</a>' +
       '<button class="retake-btn" onclick="retake()">Retake quiz</button>' +
-      '</div></div>';
+      '</div></div></div>' +
+      '</div>';
   }
 
   function retake() {
